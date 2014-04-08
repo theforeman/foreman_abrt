@@ -6,9 +6,10 @@ Gem::Specification.new do |s|
   s.date        = Date.today.to_s
   s.authors     = ["Martin Milata"]
   s.email       = ["mmilata@redhat.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of ForemanAbrt."
-  s.description = "TODO: Description of ForemanAbrt."
+  s.homepage    = "http://github.com/abrt/foreman_abrt"
+  s.summary     = "Display reports from Automatic Bug Reporting Tool"
+  s.description = "Foreman plugin that allows you to see bug reports submitted "\
+                  "by Automatic Bug Reporting Tool."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]

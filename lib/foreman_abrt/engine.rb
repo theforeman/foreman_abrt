@@ -15,7 +15,7 @@ module ForemanAbrt
 
     initializer 'foreman_abrt.register_plugin', :after=> :finisher_hook do |app|
       Foreman::Plugin.register :foreman_abrt do
-        requires_foreman '>= 1.4'
+        requires_foreman '>= 1.5'
 
         # Add permissions
         security_block :foreman_abrt do
