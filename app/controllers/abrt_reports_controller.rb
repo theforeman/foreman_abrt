@@ -1,0 +1,2 @@
+class AbrtReportsController < ApplicationController
+end

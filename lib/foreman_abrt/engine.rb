@@ -22,7 +22,7 @@ module ForemanAbrt
           permission :view_foreman_abrt, {:'foreman_abrt/hosts' => [:new_action] }
         end
 
-        # Add a new role called 'Discovery' if it doesn't exist
+        # Add a new role called 'ForemanAbrt' if it doesn't exist
         role "ForemanAbrt", [:view_foreman_abrt]
 
         #add menu entry
