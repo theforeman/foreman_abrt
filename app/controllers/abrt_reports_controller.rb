@@ -1,25 +1,11 @@
 class AbrtReportsController < ApplicationController
 
-  # TODO: #create should probably be moved into separate API controller
-  include Foreman::Controller::SmartProxyAuth
-  add_puppetmaster_filters :create
-
   def action_permission
     case params[:action]
       when 'json'
         :view
       else
         super
-    end
-  end
-
-  # POST /abrt_reports
-  def create
-    # receive json
-    if AbrtReport.import(params[:abrt_report])
-      render :json => { "status" => "OK" }
-    else
-      render :json => { "status" => "error" }, :status => 500
     end
   end
 

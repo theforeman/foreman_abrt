@@ -1,9 +1,7 @@
 class AbrtReport < ActiveRecord::Base
   include Authorizable
 
-  # attr_accessible :title, :body
   belongs_to_host
-  # TODO extend host with has_many :abrt_reports?
 
   validates :json, :presence => true
   #validates :reason, :presence => true
@@ -15,7 +13,6 @@ class AbrtReport < ActiveRecord::Base
 
   def self.import(json)
     host = Host.find_by_name(json[:host])
-    #json[:reported_at] #not used yet
     AbrtReport.transaction do
       json[:reports].each do |report|
         # import one report
