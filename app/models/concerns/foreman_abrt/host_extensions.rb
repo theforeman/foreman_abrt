@@ -9,10 +9,6 @@ module ForemanAbrt::HostExtensions
     abrt_reports.where(:created_at => (Time.now - 1.month)..Time.now)
   end
 
-  ## create or overwrite instance methods...
-  #def instance_method_name
-  #end
-
   #module ClassMethods
   #  # create or overwrite class methods...
   #  def class_method_name
