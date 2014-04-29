@@ -5,7 +5,8 @@ class CreateAbrtReports < ActiveRecord::Migration
       t.text :json
       t.string :reason
       t.integer :count
-      t.string :hash
+      t.string :duphash
+      t.timestamp :reported_at
 
       t.timestamps
     end

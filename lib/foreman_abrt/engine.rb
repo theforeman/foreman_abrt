@@ -19,18 +19,21 @@ module ForemanAbrt
 
         # Add permissions
         security_block :foreman_abrt do
-          permission :view_foreman_abrt, {:'foreman_abrt/hosts' => [:new_action] }
+          permission :view_abrt_reports,    {:abrt_reports => [:index, :show, :auto_complete_search] }
+          permission :destroy_abrt_reports, {:abrt_reports => [:destroy] }
+          permission :upload_abrt_reports,  {:abrt_reports => [:create] }
         end
 
         # Add a new role called 'ForemanAbrt' if it doesn't exist
+        # XXX
         role "ForemanAbrt", [:view_foreman_abrt]
 
         #add menu entry
         menu :top_menu, :template,
-             :url_hash => {:controller => :'foreman_abrt/hosts', :action => :new_action },
-             :caption  => 'ForemanAbrt',
-             :parent   => :hosts_menu,
-             :after    => :hosts
+             :url_hash => {:controller => :'abrt_reports', :action => :index},
+             :caption  => _('Bug reports'),
+             :parent   => :monitor_menu,
+             :after    => :reports
       end
     end
 
