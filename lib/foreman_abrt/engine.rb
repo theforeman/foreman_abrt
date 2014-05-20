@@ -8,6 +8,11 @@ module ForemanAbrt
     config.autoload_paths += Dir["#{config.root}/app/models/concerns"]
     config.autoload_paths += Dir["#{config.root}/app/overrides"]
 
+    # Initialize settings
+    initializer 'foreman_abrt.load_default_settings', :before => :load_config_initializers do |app|
+      require_dependency File.expand_path('../../../app/models/setting/abrt.rb', __FILE__) if (Setting.table_exists? rescue(false))
+    end
+
     # Add any db migrations
     initializer "foreman_abrt.load_app_instance_data" do |app|
       app.config.paths['db/migrate'] += ForemanAbrt::Engine.paths['db/migrate'].existent
