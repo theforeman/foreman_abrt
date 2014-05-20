@@ -26,7 +26,7 @@ module ForemanAbrt
 
         # Add a new role called 'ForemanAbrt' if it doesn't exist
         # XXX
-        role "ForemanAbrt", [:view_foreman_abrt]
+        role "ForemanAbrt", [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports]
 
         #add menu entry
         menu :top_menu, :template,
@@ -41,7 +41,6 @@ module ForemanAbrt
     config.to_prepare do
       begin
         Host::Managed.send(:include, ForemanAbrt::HostExtensions)
-        HostsHelper.send(:include, ForemanAbrt::HostsHelperExtensions)
       rescue => e
         puts "ForemanAbrt: skipping engine hook (#{e.to_s})"
       end
