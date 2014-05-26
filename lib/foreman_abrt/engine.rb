@@ -27,11 +27,12 @@ module ForemanAbrt
           permission :view_abrt_reports,    {:abrt_reports => [:index, :show, :auto_complete_search] }
           permission :destroy_abrt_reports, {:abrt_reports => [:destroy] }
           permission :upload_abrt_reports,  {:abrt_reports => [:create] }
+          permission :forward_abrt_reports, {:abrt_reports => [:forward] }
         end
 
         # Add a new role called 'ForemanAbrt' if it doesn't exist
         # XXX
-        role "ForemanAbrt", [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports]
+        role "ForemanAbrt", [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports]
 
         #add menu entry
         menu :top_menu, :template,
