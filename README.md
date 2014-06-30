@@ -181,6 +181,7 @@ configuration screen (*Administer*->*Settings*).
   certificate validation.
 - Forwarding reports on the proxy - drop it altogether, or forward the server
   response to the client?
+- Use puppet to configure managed hosts to send ureports to Foreman.
 
 ## Copyright
 
