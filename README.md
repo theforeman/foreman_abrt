@@ -40,7 +40,7 @@ server.
 ## Installation
 
 To be able to see ABRT bug reports in your Foreman instance, you need to
-install the plugin itself, set up the ABRT support in your smart proxies and
+install the plugin itself, install ABRT plugin for your smart proxies and
 configure your hosts to send the bug reports to their smart proxy.
 
 ### Installing the Foreman plugin
@@ -51,18 +51,20 @@ instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Instal
 ### Setting up smart proxies
 
 Currently you have to install modified version of smart-proxy from [git
-repository](https://github.com/mmilata/smart-proxy/tree/foreman_abrt_plugin)
-(note the `foreman_abrt_plugin` branch). Once smart-proxy [supports
-plugins](https://github.com/theforeman/smart-proxy/pull/150), the ABRT support
-code will be rewritten as a plugin.
+repository](https://github.com/mmilata/smart-proxy/tree/chef_request_refactor)
+(note the `chef_request_refactor` branch). Once the [pull
+request](https://github.com/theforeman/smart-proxy/pull/182), you should be
+able to use the upstream smart-proxy code.
 
 - Clone the git repository on your smart-proxy host and check out the
-  `foreman_abrt_plugin` branch. XXX satyr gem
+  `foreman_abrt_plugin` branch. Generate the source archive needed for building
+  RPM.
 
   ```
   ~$ git clone https://github.com/mmilata/smart-proxy.git
   ~$ cd smart-proxy
-  ~/smart-proxy$ git checkout foreman_abrt_plugin
+  ~/smart-proxy$ git checkout chef_request_refactor
+  ~/smart-proxy$ rake pkg:generate_source
   ```
 
 - If you want to use the report aggregation (reports are grouped on the proxy
@@ -74,13 +76,26 @@ code will be rewritten as a plugin.
   ~# gem install satyr
   ```
 
-- Use tito to build the smart-proxy package, then install it. Replace `.f19`
-  with the correct tag for your distribution.
+- Create foreman-proxy RPM and install it:
 
   ```
-  ~/smart-proxy$ tito tag --keep-version --no-auto-changelog
-  ~/smart-proxy$ tito build --offline --test --rpm --dist=.f19 --output=build/
-  ~/smart-proxy# yum install build/noarch/*.rpm
+  ~$ git clone https://github.com/theforeman/foreman-packaging.git
+  ~$ cd foreman-packaging
+  ~/foreman-packaging$ git checkout rpm/develop
+  ~/foreman-packaging$ cd foreman-proxy
+  ~/foreman-packaging/foreman-proxy$ cp ~/smart-proxy/pkg/foreman-proxy*bz2 .
+  ~/foreman-packaging/foreman-proxy$ rpmbuild --define "_sourcedir `pwd`" -ba foreman-proxy.spec
+  ~/foreman-packaging/foreman-proxy$ yum install ~/rpmbuild/RPMS/noarch/foreman-proxy*rpm
+  ```
+
+- Install the ABRT smart-proxy plugin:
+
+  ```
+  ~$ git clone https://github.com/abrt/foreman_proxy_abrt.git
+  ~$ cd foreman_proxy_abrt
+  ~/foreman_proxy_abrt$ gem build
+  ~/foreman_proxy_abrt$ rpmbuild --define "_sourcedir `pwd`" -ba extra/rubygem-foreman_proxy_abrt.spec
+  ~/foreman_proxy_abrt$ yum install ~/rpmbuild/RPMS/noarch/rubygem-foreman_proxy_abrt*rpm
   ```
 
 - Edit `/etc/foreman-proxy/settings.yml` to configure the proxy. Assuming the
@@ -94,10 +109,12 @@ code will be rewritten as a plugin.
   :foreman_ssl_ca: /var/lib/puppet/ssl/certs/ca.pem
   :foreman_ssl_cert: /var/lib/puppet/ssl/certs/f19-smartproxy.tld.pem
   :foreman_ssl_key: /var/lib/puppet/ssl/private_keys/f19-smartproxy.tld.pem
-  # enable ABRT proxy
-  :abrtproxy: true
-  # to enable report aggregation, uncomment following line:
-  #:abrtproxy_aggregate_reports: true
+  ```
+
+- Rename `/etc/foreman-proxy/settings.d/abrt.yml.example` to `abrt.yml` to enable the ABRT proxy plugin:
+  ```
+  ~$ cd /etc/foreman-proxy/settings.d/
+  /etc/foreman-proxy/settings.d/$ mv abrt.yml.example abrt.yml
   ```
 
 - Start the smart-proxy.
@@ -151,7 +168,8 @@ After a couple of seconds, a new file should appear in
 `/var/spool/foreman-proxy/abrt-send` on the smart-proxy host. The reports from
 the smart-proxy are sent to the Foreman in batches every half an hour (by
 default). This means that within half an hour you should be able to see the bug
-report in the Foreman web interface.
+report in the Foreman web interface. You can send the reports to Foreman
+manually by running the `smart-proxy-abrt-send` command.
 
 ## Usage
 
@@ -176,12 +194,12 @@ configuration screen (*Administer*->*Settings*).
 ## TODO
 
 - Graph with number of reports vs. time on the dashboard.
-- Figure out how to import the Puppet CA cert on managed hosts to the system
-  certificates so that the reporter-ureport doesn't have to skip server
-  certificate validation.
 - Forwarding reports on the proxy - drop it altogether, or forward the server
   response to the client?
 - Use puppet to configure managed hosts to send ureports to Foreman.
+- Figure out how to import the Puppet CA cert on managed hosts to the system
+  certificates so that the reporter-ureport doesn't have to skip server
+  certificate validation.
 
 ## Copyright
 
