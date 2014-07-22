@@ -53,8 +53,8 @@ instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Instal
 Currently you have to install modified version of smart-proxy from [git
 repository](https://github.com/mmilata/smart-proxy/tree/chef_request_refactor)
 (note the `chef_request_refactor` branch). Once the [pull
-request](https://github.com/theforeman/smart-proxy/pull/182), you should be
-able to use the upstream smart-proxy code.
+request](https://github.com/theforeman/smart-proxy/pull/182) is merged, you
+should be able to use the upstream smart-proxy code.
 
 - Clone the git repository on your smart-proxy host and check out the
   `foreman_abrt_plugin` branch. Generate the source archive needed for building
