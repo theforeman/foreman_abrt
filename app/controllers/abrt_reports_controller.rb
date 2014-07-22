@@ -1,4 +1,6 @@
 class AbrtReportsController < ApplicationController
+  include Foreman::Controller::AutoCompleteSearch
+  before_filter :setup_search_options, :only => :index
 
   def action_permission
     case params[:action]
