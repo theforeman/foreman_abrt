@@ -15,7 +15,6 @@ class AbrtReportsController < ApplicationController
 
   # GET /abrt_reports
   def index
-    #TODO: permissions
     @abrt_reports = resource_base.search_for(params[:search], :order => params[:order]).paginate(:page => params[:page], :per_page => params[:per_page]).includes(:host)
   end
 

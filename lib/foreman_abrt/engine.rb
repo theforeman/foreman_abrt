@@ -30,9 +30,8 @@ module ForemanAbrt
           permission :forward_abrt_reports, {:abrt_reports => [:forward] }
         end
 
-        # Add a new role called 'ForemanAbrt' if it doesn't exist
-        # XXX
-        role "ForemanAbrt", [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports]
+        # Add a new role
+        role "ABRT reports handling", [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports]
 
         #add menu entry
         menu :top_menu, :template,
