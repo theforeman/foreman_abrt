@@ -43,7 +43,6 @@ class AbrtReportsController < ApplicationController
 
   # POST /abrt_reports/42/forward
   def forward
-    #XXX auditable?
     @abrt_report = resource_base.find(params[:id])
     redirect_to abrt_report_url(@abrt_report)
 

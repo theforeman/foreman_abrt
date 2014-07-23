@@ -1,6 +1,8 @@
 class AbrtReport < ActiveRecord::Base
   include Authorizable
 
+  audited :associated_with => :host, :allow_mass_assignment => true
+
   belongs_to_host
   has_one :environment, :through => :host
   has_one :hostgroup, :through => :host
