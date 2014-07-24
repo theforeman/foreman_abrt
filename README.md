@@ -72,7 +72,7 @@ should be able to use the upstream smart-proxy code.
   gem:
 
   ```
-  ~# yum install satyr
+  ~# yum install satyr rubygem-ffi
   ~# gem install satyr
   ```
 
@@ -85,6 +85,7 @@ should be able to use the upstream smart-proxy code.
   ~/foreman-packaging$ cd foreman-proxy
   ~/foreman-packaging/foreman-proxy$ cp ~/smart-proxy/pkg/foreman-proxy*bz2 .
   ~/foreman-packaging/foreman-proxy$ rpmbuild --define "_sourcedir `pwd`" -ba foreman-proxy.spec
+  ~/foreman-packaging/foreman-proxy$ rpm -Uvh http://yum.theforeman.org/releases/1.5/fc19/x86_64/foreman-release.rpm
   ~/foreman-packaging/foreman-proxy$ yum install ~/rpmbuild/RPMS/noarch/foreman-proxy*rpm
   ```
 
@@ -93,7 +94,8 @@ should be able to use the upstream smart-proxy code.
   ```
   ~$ git clone https://github.com/abrt/foreman_proxy_abrt.git
   ~$ cd foreman_proxy_abrt
-  ~/foreman_proxy_abrt$ gem build
+  ~/foreman_proxy_abrt$ gem build foreman_proxy_abrt.gemspec
+  ~/foreman_proxy_abrt$ yum install rubygems-devel rubygem-minitest
   ~/foreman_proxy_abrt$ rpmbuild --define "_sourcedir `pwd`" -ba extra/rubygem-foreman_proxy_abrt.spec
   ~/foreman_proxy_abrt$ yum install ~/rpmbuild/RPMS/noarch/rubygem-foreman_proxy_abrt*rpm
   ```
