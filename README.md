@@ -50,22 +50,8 @@ instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Instal
 
 ### Setting up smart proxies
 
-Currently you have to install modified version of smart-proxy from [git
-repository](https://github.com/mmilata/smart-proxy/tree/chef_request_refactor)
-(note the `chef_request_refactor` branch). Once the [pull
-request](https://github.com/theforeman/smart-proxy/pull/182) is merged, you
-should be able to use the upstream smart-proxy code.
-
-- Clone the git repository on your smart-proxy host and check out the
-  `foreman_abrt_plugin` branch. Generate the source archive needed for building
-  RPM.
-
-  ```
-  ~$ git clone https://github.com/mmilata/smart-proxy.git
-  ~$ cd smart-proxy
-  ~/smart-proxy$ git checkout chef_request_refactor
-  ~/smart-proxy$ rake pkg:generate_source
-  ```
+You need smart-proxy version 1.6 or later (e.g. installed from git) in order to
+install the ABRT plugin.
 
 - If you want to use the report aggregation (reports are grouped on the proxy
   and the same reports are sent only once), you have to install the satyr ruby
@@ -74,19 +60,6 @@ should be able to use the upstream smart-proxy code.
   ```
   ~# yum install satyr rubygem-ffi
   ~# gem install satyr
-  ```
-
-- Create foreman-proxy RPM and install it:
-
-  ```
-  ~$ git clone https://github.com/theforeman/foreman-packaging.git
-  ~$ cd foreman-packaging
-  ~/foreman-packaging$ git checkout rpm/develop
-  ~/foreman-packaging$ cd foreman-proxy
-  ~/foreman-packaging/foreman-proxy$ cp ~/smart-proxy/pkg/foreman-proxy*bz2 .
-  ~/foreman-packaging/foreman-proxy$ rpmbuild --define "_sourcedir `pwd`" -ba foreman-proxy.spec
-  ~/foreman-packaging/foreman-proxy$ rpm -Uvh http://yum.theforeman.org/releases/1.5/fc19/x86_64/foreman-release.rpm
-  ~/foreman-packaging/foreman-proxy$ yum install ~/rpmbuild/RPMS/noarch/foreman-proxy*rpm
   ```
 
 - Install the ABRT smart-proxy plugin:
@@ -100,17 +73,13 @@ should be able to use the upstream smart-proxy code.
   ~/foreman_proxy_abrt$ yum install ~/rpmbuild/RPMS/noarch/rubygem-foreman_proxy_abrt*rpm
   ```
 
-- Edit `/etc/foreman-proxy/settings.yml` to configure the proxy. Assuming the
-  proxy runs on `f19-smartproxy.tld` and the Foreman instance on
-  `f19-foreman.tld`, the file should contain these lines:
+- Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
+  which is normally not needed. Assuming Foreman runs on `f19-foreman.tld` the
+  file should contain following:
 
   ```
   # URL of your foreman instance
   :foreman_url: https://f19-foreman.tld
-  # certificates used for communication with foreman
-  :foreman_ssl_ca: /var/lib/puppet/ssl/certs/ca.pem
-  :foreman_ssl_cert: /var/lib/puppet/ssl/certs/f19-smartproxy.tld.pem
-  :foreman_ssl_key: /var/lib/puppet/ssl/private_keys/f19-smartproxy.tld.pem
   ```
 
 - Rename `/etc/foreman-proxy/settings.d/abrt.yml.example` to `abrt.yml` to enable the ABRT proxy plugin:
