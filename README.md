@@ -65,12 +65,12 @@ install the ABRT plugin.
 - Install the ABRT smart-proxy plugin:
 
   ```
-  ~$ git clone https://github.com/abrt/foreman_proxy_abrt.git
-  ~$ cd foreman_proxy_abrt
-  ~/foreman_proxy_abrt$ gem build foreman_proxy_abrt.gemspec
-  ~/foreman_proxy_abrt$ yum install rubygems-devel rubygem-minitest
-  ~/foreman_proxy_abrt$ rpmbuild --define "_sourcedir `pwd`" -ba extra/rubygem-foreman_proxy_abrt.spec
-  ~/foreman_proxy_abrt$ yum install ~/rpmbuild/RPMS/noarch/rubygem-foreman_proxy_abrt*rpm
+  ~$ git clone https://github.com/abrt/smart-proxy-abrt.git
+  ~$ cd smart-proxy-abrt
+  ~/smart-proxy-abrt$ gem build smart_proxy_abrt.gemspec
+  ~/smart-proxy-abrt$ yum install rubygems-devel rubygem-minitest
+  ~/smart-proxy-abrt$ rpmbuild --define "_sourcedir `pwd`" -ba extra/rubygem-smart_proxy_abrt.spec
+  ~/smart-proxy-abrt$ yum install ~/rpmbuild/RPMS/noarch/rubygem-smart_proxy_abrt*rpm
   ```
 
 - Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
