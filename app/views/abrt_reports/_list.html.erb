@@ -15,7 +15,7 @@
         <% if abrt_report.host.nil? %>
             <td></td>
         <% else %>
-            <td><%= link_to abrt_report.host, host_abrt_reports_path(abrt_report) %></td>
+            <td><%= link_to abrt_report.host, host_abrt_reports_path(abrt_report.host) %></td>
         <% end %>
       <% end %>
       <td> <%= link_to(_("%s ago") % time_ago_in_words(abrt_report.reported_at.getlocal), abrt_report_path(abrt_report)) %> </td>
