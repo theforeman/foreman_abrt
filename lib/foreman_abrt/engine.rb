@@ -39,6 +39,9 @@ module ForemanAbrt
              :caption  => _('Bug reports'),
              :parent   => :monitor_menu,
              :after    => :reports
+
+        # add dashboard widget
+        widget 'foreman_abrt_widget', :name => N_('Bug report chart'), :sizex => 6, :sizey => 1
       end
     end
 
@@ -46,6 +49,7 @@ module ForemanAbrt
     config.to_prepare do
       begin
         Host::Managed.send(:include, ForemanAbrt::HostExtensions)
+        DashboardController.send(:include, ForemanAbrt::DashboardControllerExtensions)
       rescue => e
         puts "ForemanAbrt: skipping engine hook (#{e.to_s})"
       end
