@@ -43,6 +43,10 @@ To be able to see ABRT bug reports in your Foreman instance, you need to
 install the plugin itself, install ABRT plugin for your smart proxies and
 configure your hosts to send the bug reports to their smart proxy.
 
+Both plugins are available as RPMs in [Foremay YUM repositories](http://yum.theforeman.org/).
+
+The plugins require both Foreman and smart-proxy to be version 1.6 or later.
+
 ### Installing the Foreman plugin
 
 To install the Foreman plugin, follow the [plugin installation
@@ -50,28 +54,9 @@ instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Instal
 
 ### Setting up smart proxies
 
-You need smart-proxy version 1.6 or later (e.g. installed from git) in order to
-install the ABRT plugin.
-
-- If you want to use the report aggregation (reports are grouped on the proxy
-  and the same reports are sent only once), you have to install the satyr ruby
-  gem:
-
-  ```
-  ~# yum install satyr rubygem-ffi
-  ~# gem install satyr
-  ```
-
-- Install the ABRT smart-proxy plugin:
-
-  ```
-  ~$ git clone https://github.com/abrt/smart-proxy-abrt.git
-  ~$ cd smart-proxy-abrt
-  ~/smart-proxy-abrt$ gem build smart_proxy_abrt.gemspec
-  ~/smart-proxy-abrt$ yum install rubygems-devel rubygem-minitest
-  ~/smart-proxy-abrt$ rpmbuild --define "_sourcedir `pwd`" -ba extra/rubygem-smart_proxy_abrt.spec
-  ~/smart-proxy-abrt$ yum install ~/rpmbuild/RPMS/noarch/rubygem-smart_proxy_abrt*rpm
-  ```
+Follow the [smart-proxy plugin installation
+instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Smart-Proxy_Plugin).
+The plugin needs some configuration in order to work correctly.
 
 - Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
   which is normally not needed. Assuming Foreman runs on `f19-foreman.tld` the
@@ -82,17 +67,15 @@ install the ABRT plugin.
   :foreman_url: https://f19-foreman.tld
   ```
 
-- Rename `/etc/foreman-proxy/settings.d/abrt.yml.example` to `abrt.yml` to enable the ABRT proxy plugin:
+- Ensure that `/etc/foreman-proxy/settings.d/abrt.yml` contains the following line:
   ```
-  ~$ cd /etc/foreman-proxy/settings.d/
-  /etc/foreman-proxy/settings.d/$ mv abrt.yml.example abrt.yml
+  :enabled: true
   ```
 
-- Start the smart-proxy.
-
-  ```
-  ~# systemctl start foreman-proxy
-  ```
+- Cron is used to transfer the captured bug reports to Foreman in batches.
+  Ensure that the `smart-proxy-abrt-send` command is run periodically. The
+  provided RPM package contains a cron snippet that runs the command every 30
+  minutes.
 
 ### Configuring hosts to send bug reports to Foreman
 
@@ -164,7 +147,6 @@ configuration screen (*Administer*->*Settings*).
 
 ## TODO
 
-- Graph with number of reports vs. time on the dashboard.
 - Forwarding reports on the proxy - drop it altogether, or forward the server
   response to the client?
 - Use puppet to configure managed hosts to send ureports to Foreman.

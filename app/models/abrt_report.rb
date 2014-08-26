@@ -30,13 +30,13 @@ class AbrtReport < ActiveRecord::Base
   scoped_search :on => :response_message, :complete_value => true, :rename => :response
   scoped_search :on => :response_bthash,  :complete_value => true, :rename => :bthash
 
-  scoped_search :in => :abrt_report_response_destination, :on => :reporter, :complete_value => true, :rename => :destination_reporter
-  scoped_search :in => :abrt_report_response_destination, :on => :desttype, :complete_value => true, :rename => :destination_type
-  scoped_search :in => :abrt_report_response_destination, :on => :value   , :complete_value => true, :rename => :destination_value
+  scoped_search :in => :abrt_report_response_destinations, :on => :reporter, :complete_value => true, :rename => :destination_reporter
+  scoped_search :in => :abrt_report_response_destinations, :on => :desttype, :complete_value => true, :rename => :destination_type
+  scoped_search :in => :abrt_report_response_destinations, :on => :value   , :complete_value => true, :rename => :destination_value
 
-  scoped_search :in => :abrt_report_response_solution, :on => :cause, :complete_value => true, :rename => :solution_cause
-  scoped_search :in => :abrt_report_response_solution, :on => :note,  :complete_value => true, :rename => :solution_note
-  scoped_search :in => :abrt_report_response_solution, :on => :url,   :complete_value => true, :rename => :solution_url
+  scoped_search :in => :abrt_report_response_solutions, :on => :cause, :complete_value => true, :rename => :solution_cause
+  scoped_search :in => :abrt_report_response_solutions, :on => :note,  :complete_value => true, :rename => :solution_note
+  scoped_search :in => :abrt_report_response_solutions, :on => :url,   :complete_value => true, :rename => :solution_url
 
   def self.import(json)
     host = Host.find_by_name(json[:host])
