@@ -1,6 +1,7 @@
 class AbrtReportsController < ApplicationController
   include Foreman::Controller::AutoCompleteSearch
   before_filter :setup_search_options, :only => :index
+  before_filter :find_by_id, :only => [:show, :destroy, :json, :forward]
 
   def action_permission
     case params[:action]
@@ -20,12 +21,10 @@ class AbrtReportsController < ApplicationController
 
   # GET /abrt_reports/42
   def show
-    @abrt_report = resource_base.find(params[:id])
   end
 
   # DELETE /abrt_reports/42
   def destroy
-    @abrt_report = resource_base.find(params[:id])
     if @abrt_report.destroy
       notice _("Successfully deleted bug report.")
     else
@@ -36,13 +35,11 @@ class AbrtReportsController < ApplicationController
 
   # GET /abrt_reports/42/json
   def json
-    @abrt_report = resource_base.find(params[:id])
     render :json => JSON.parse(@abrt_report.json)
   end
 
   # POST /abrt_reports/42/forward
   def forward
-    @abrt_report = resource_base.find(params[:id])
     redirect_to abrt_report_url(@abrt_report)
 
     begin
@@ -58,5 +55,11 @@ class AbrtReportsController < ApplicationController
     end
 
     notice _("Report successfully forwarded")
+  end
+
+  private
+
+  def find_by_id
+    @abrt_report = resource_base.find(params[:id])
   end
 end
