@@ -13,6 +13,7 @@ class AbrtReport < ActiveRecord::Base
   validates :json, :presence => true
   validates :count, :numericality => { :only_integer => true, :greater_than => 0 }
   validates :duphash, :format => { :with => /\A[0-9a-fA-F]+\z/ }, :allow_blank => true
+  validates :reported_at, :presence => true
 
   scoped_search :in => :host,        :on => :name,  :complete_value => true, :rename => :host
   scoped_search :in => :environment, :on => :name,  :complete_value => true, :rename => :environment

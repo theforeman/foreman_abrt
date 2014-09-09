@@ -13,7 +13,7 @@ module AbrtReportsHelper
     start = Time.now.utc - 24.hours
     (0..23).each do |i|
       t = start + (interval * i)
-      data << [24-i, abrt_reports.where(:created_at => t..(t+interval)).count]
+      data << [24-i, abrt_reports.where(:reported_at => t..(t+interval)).count]
     end
     data
   end
