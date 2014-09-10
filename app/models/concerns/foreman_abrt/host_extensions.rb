@@ -6,6 +6,6 @@ module ForemanAbrt::HostExtensions
   end
 
   def recent_abrt_reports
-    abrt_reports.where(:reported_at => (Time.now - 1.month)..Time.now)
+    abrt_reports.where(:reported_at => (Time.now - 1.week)..Time.now).limit(10)
   end
 end
