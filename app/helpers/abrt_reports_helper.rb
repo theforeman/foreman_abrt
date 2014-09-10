@@ -50,4 +50,12 @@ module AbrtReportsHelper
 
     JSON.parse(response.body)
   end
+
+  def format_reason reason
+    if reason.nil? or reason.empty?
+      _("Unknown")
+    else
+      reason
+    end
+  end
 end

@@ -10,7 +10,7 @@
     <tr>
       <td> <%= link_to (_("%s ago") % time_ago_in_words(abrt_report.reported_at.getlocal)), abrt_report %></td>
       <td> <%= abrt_report.count %> </td>
-      <td> <%= abrt_report.reason %> </td>
+      <td> <%= format_reason abrt_report.reason %> </td>
     </tr>
     <% end %>
   </table>

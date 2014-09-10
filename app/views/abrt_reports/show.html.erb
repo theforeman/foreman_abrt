@@ -14,7 +14,7 @@
 <div class="row">
   <div class="col-md-12">
     <table class="table table-bordered table-striped">
-      <tr><th><%= _('Reason') %></th><td><%= @abrt_report.reason %></td></tr>
+      <tr><th><%= _('Reason') %></th><td><%= format_reason @abrt_report.reason %></td></tr>
       <tr><th><%= _('First reported') %></th><td><%= @abrt_report.reported_at.getlocal %></td></tr>
       <tr><th><%= _('Repeated') %></th><td><%= @abrt_report.count %></td></tr>
       <tr><th><%= _('Duplication hash') %></th><td><%= @abrt_report.duphash %></td></tr>
