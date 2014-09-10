@@ -55,36 +55,6 @@ class AbrtReport < ActiveRecord::Base
     reports
   end
 
-  # XXX is the network communication acceptable in a model?
-  def forward
-    request_params = {
-      :timeout => 60,
-      :open_timeout => 10,
-      :verify_ssl => Setting[:abrt_server_verify_ssl] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
-    }
-
-    if Setting[:abrt_server_ssl_ca_file] && !Setting[:abrt_server_ssl_ca_file].empty?
-      request_params[:ssl_ca_file] = Setting[:abrt_server_ssl_ca_file]
-    end
-
-    # XXX what certificates will be used if communicating with e.g. customer portal?
-    if Setting[:abrt_server_ssl_certificate] && !Setting[:abrt_server_ssl_certificate].empty? \
-       && Setting[:abrt_server_ssl_priv_key] && !Setting[:abrt_server_ssl_priv_key].empty?
-      request_params[:ssl_client_cert] = OpenSSL::X509::Certificate.new(File.read(Setting[:abrt_server_ssl_certificate]))
-      request_params[:ssl_client_key]  = OpenSSL::PKey::RSA.new(File.read(Setting[:abrt_server_ssl_priv_key]))
-    end
-
-    resource = RestClient::Resource.new(Setting[:abrt_server_url], request_params)
-    response = resource['reports/new/'].post({:file => json, :multipart => true}, :content_type => :json, :accept => :json)
-
-    if response.code != 202
-      logger.error "Failed to forward bug report: #{response.code}: #{response.to_str}"
-      raise ::Foreman::Exception.new(N_("Failed to forward bug report: %s: %s", response.code, response.to_str))
-    end
-
-    JSON.parse(response.body)
-  end
-
   def add_response(response)
     self.transaction do
       abrt_report_response_solutions.clear

@@ -1,5 +1,7 @@
 class AbrtReportsController < ApplicationController
   include Foreman::Controller::AutoCompleteSearch
+  include AbrtReportsHelper
+
   before_filter :setup_search_options, :only => :index
   before_filter :find_by_id, :only => [:show, :destroy, :json, :forward]
 
@@ -43,7 +45,7 @@ class AbrtReportsController < ApplicationController
     redirect_to abrt_report_url(@abrt_report)
 
     begin
-      response = @abrt_report.forward
+      response = send_to_abrt_server @abrt_report
     rescue => e
       error _("Server rejected our report: #{e.message}") and return
     end
