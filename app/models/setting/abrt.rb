@@ -6,10 +6,10 @@ class Setting::Abrt < ::Setting
     fqdn = Facter.value(:fqdn) || SETTINGS[:fqdn]
     lower_fqdn = fqdn.downcase
 
-    ssl_cert     = "#{SETTINGS[:puppetvardir]}/ssl/certs/#{lower_fqdn}.pem"
-    ssl_ca_file  = "#{SETTINGS[:puppetvardir]}/ssl/certs/ca.pem"
-    ssl_priv_key = "#{SETTINGS[:puppetvardir]}/ssl/private_keys/#{lower_fqdn}.pem"
-    #XXX initialize from ssl_{certificate,ca_file,priv_key}
+    # Try taking the provisioning SSL setup for default
+    ssl_cert     = Setting[:ssl_certificate] or "#{SETTINGS[:puppetvardir]}/ssl/certs/#{lower_fqdn}.pem"
+    ssl_ca_file  = Setting[:ssl_ca_file]     or "#{SETTINGS[:puppetvardir]}/ssl/certs/ca.pem"
+    ssl_priv_key = Setting[:ssl_priv_key]    or "#{SETTINGS[:puppetvardir]}/ssl/private_keys/#{lower_fqdn}.pem"
 
     Setting.transaction do
       [
