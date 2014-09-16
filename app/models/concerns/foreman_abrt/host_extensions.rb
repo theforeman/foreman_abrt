@@ -6,13 +6,6 @@ module ForemanAbrt::HostExtensions
   end
 
   def recent_abrt_reports
-    abrt_reports.where(:created_at => (Time.now - 1.month)..Time.now)
+    abrt_reports.where(:reported_at => (Time.now - 1.week)..Time.now).limit(10)
   end
-
-  #module ClassMethods
-  #  # create or overwrite class methods...
-  #  def class_method_name
-  #  end
-  #end
-
 end

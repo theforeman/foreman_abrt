@@ -5,6 +5,9 @@ Rails.application.routes.draw do
       get 'json'
       post 'forward'
     end
+    collection do
+      get 'auto_complete_search'
+    end
   end
   get 'hosts/:host_id/abrt_reports', :to => 'abrt_reports#index',
                                      :constraints => {:host_id => /[^\/]+/},

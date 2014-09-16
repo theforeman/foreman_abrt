@@ -3,6 +3,7 @@ module Api
     class AbrtReportsController < V2::BaseController
       include Api::Version2
       include Foreman::Controller::SmartProxyAuth
+      include AbrtReportsHelper
 
       add_puppetmaster_filters :create
 
@@ -19,7 +20,7 @@ module Api
         if Setting[:abrt_automatically_forward]
           abrt_reports.each do |report|
             begin
-              response = report.forward
+              response = send_to_abrt_server report
               report.add_response response
             rescue => e
               logger.error "Failed to forward ABRT report: #{e.message}"

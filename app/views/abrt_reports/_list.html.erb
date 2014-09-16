@@ -19,7 +19,7 @@
         <% end %>
       <% end %>
       <td> <%= link_to(_("%s ago") % time_ago_in_words(abrt_report.reported_at.getlocal), abrt_report_path(abrt_report)) %> </td>
-      <td> <%= if abrt_report.reason.nil? or abrt_report.reason.empty? then _("Unknown") else abrt_report.reason end %> </td>
+      <td> <%= format_reason abrt_report.reason %> </td>
       <td> <%= abrt_report.count %> </td>
       <td> <%= checked_icon !abrt_report.forwarded_at.nil? %> </td>
       <td align="right">
