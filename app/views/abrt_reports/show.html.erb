@@ -2,7 +2,6 @@
 
 <%= title_actions link_to(_("Host details"), @abrt_report.host),
   link_to(_("Other reports for this host"), host_abrt_reports_path(@abrt_report.host)),
-  link_to(_("JSON"), json_abrt_report_path(@abrt_report)),
   link_to(_("Forward report"),
           forward_abrt_report_path(@abrt_report),
           :class => "btn btn-success",
