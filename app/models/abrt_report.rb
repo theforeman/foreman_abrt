@@ -42,16 +42,17 @@ class AbrtReport < ActiveRecord::Base
   def self.import(json)
     host = Host.find_by_name(json[:host])
     reports = []
-    AbrtReport.transaction do
-      json[:reports].each do |report|
-        # import one report
-        reason = nil # try extracting reason from the report
-        reason ||= report[:full][:reason] if report[:full].has_key? :reason
+
+    json[:reports].each do |report|
+      begin
         reports << AbrtReport.create!(:host => host, :count => report[:count], :json => report[:full].to_json,
-                                      :duphash => report[:duphash], :reason => reason,
+                                      :duphash => report[:duphash], :reason => report[:full][:reason],
                                       :reported_at => report[:reported_at])
+      rescue => e
+        logger.error "Failed to import ABRT report from #{host}: #{e.class}:#{e.message}"
       end
     end
+
     reports
   end
 
