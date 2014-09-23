@@ -8,19 +8,25 @@ module AbrtReportsHelper
   end
 
   def count_abrt_reports abrt_reports
+    range_days = 14
     data = []
-    interval = 1.hours
-    start = Time.now.utc - 24.hours
-    (0..23).each do |i|
-      t = start + (interval * i)
-      data << [24-i, abrt_reports.where(:reported_at => t..(t+interval)).count]
+    now = Time.now.utc
+    start = now - range_days.days
+    by_day = abrt_reports.where(:reported_at => start..now).
+                          group('DATE(reported_at)').
+                          sum(:count)
+
+    range_days.downto(1) do |days_back|
+      date = (now - (days_back-1).days).strftime('%Y-%m-%d')
+      crashes = by_day[date] or 0
+      data << [days_back, crashes]
     end
     data
   end
 
   def render_abrt_graph abrt_reports, options = {}
     data = count_abrt_reports abrt_reports
-    flot_bar_chart 'abrt_graph', _('Hours Ago'), _('Number of crashes'), data, options
+    flot_bar_chart 'abrt_graph', _('Days Ago'), _('Number of crashes'), data, options
   end
 
   def send_to_abrt_server abrt_report
