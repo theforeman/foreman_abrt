@@ -3,12 +3,10 @@ class AbrtReportsController < ApplicationController
   include AbrtReportsHelper
 
   before_filter :setup_search_options, :only => :index
-  before_filter :find_by_id, :only => [:show, :destroy, :json, :forward]
+  before_filter :find_by_id, :only => [:show, :destroy, :forward]
 
   def action_permission
     case params[:action]
-      when 'json'
-        :view
       when 'forward'
         :forward
       else
@@ -23,6 +21,10 @@ class AbrtReportsController < ApplicationController
 
   # GET /abrt_reports/42
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @abrt_report.json }
+    end
   end
 
   # DELETE /abrt_reports/42
@@ -33,11 +35,6 @@ class AbrtReportsController < ApplicationController
       error @abrt_reports.errors.full_messages.join("<br/>")
     end
     redirect_to abrt_reports_url
-  end
-
-  # GET /abrt_reports/42/json
-  def json
-    render :json => JSON.parse(@abrt_report.json)
   end
 
   # POST /abrt_reports/42/forward

@@ -2,7 +2,6 @@ Rails.application.routes.draw do
 
   resources :abrt_reports, :only => [:index, :show, :destroy] do
     member do
-      get 'json'
       post 'forward'
     end
     collection do

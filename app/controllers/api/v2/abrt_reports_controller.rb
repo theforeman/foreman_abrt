@@ -17,6 +17,11 @@ module Api
           return
         end
 
+        if abrt_reports.count == 0
+          render :json => { "Failed to import any report" => e.message }, :status => :unprocessable_entity
+          return
+        end
+
         if Setting[:abrt_automatically_forward]
           abrt_reports.each do |report|
             begin
