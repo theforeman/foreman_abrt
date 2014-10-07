@@ -149,6 +149,14 @@ default). This means that within half an hour you should be able to see the bug
 report in the Foreman web interface. You can send the reports to Foreman
 manually by running the `smart-proxy-abrt-send` command.
 
+If the will-crash package is not available, you can try the following. Please
+make sure not to actually report this to `sleep` maintainers, though:
+
+```
+~$ sleep 1d &
+~$ kill -SEGV $!
+```
+
 ## Usage
 
 The list of received bug reports can be accessed by clicking on *Bug reports*
