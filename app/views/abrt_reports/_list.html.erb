@@ -1,0 +1,33 @@
+<table class="table table-bordered table-striped ellipsis">
+  <tr>
+    <% unless params[:host_id] %>
+      <th><%= sort :host %></th>
+    <% end %>
+    <th><%= sort :reported, :as => _("Reported") %></th>
+    <th class="col-md-1"><%= sort :reason, :as => _("Reason") %></th>
+    <th class="col-md-1"><%= _("Repeated") %></th>
+    <th class="col-md-1"><%= _("Forwarded") %></th>
+    <th class="col-md-1"></th>
+  </tr>
+  <% for abrt_report in @abrt_reports %>
+    <tr>
+      <% if params[:host_id].nil? %>
+        <% if abrt_report.host.nil? %>
+            <td></td>
+        <% else %>
+            <td><%= link_to abrt_report.host, host_abrt_reports_path(abrt_report.host) %></td>
+        <% end %>
+      <% end %>
+      <td> <%= link_to(_("%s ago") % time_ago_in_words(abrt_report.reported_at.getlocal), abrt_report_path(abrt_report)) %> </td>
+      <td> <%= format_reason abrt_report.reason %> </td>
+      <td> <%= abrt_report.count %> </td>
+      <td> <%= checked_icon !abrt_report.forwarded_at.nil? %> </td>
+      <td align="right">
+        <%= display_delete_if_authorized hash_for_abrt_report_path(:id => abrt_report.id).merge(:auth_object => abrt_report, :authorizer => authorizer),
+                                         :confirm => _("Delete bug report for %s?") % abrt_report.host.try(:name) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= page_entries_info @abrt_reports %>
+<%= will_paginate @abrt_reports %>
