@@ -45,7 +45,20 @@ configure your hosts to send the bug reports to their smart proxy.
 
 Both plugins are available as RPMs in [Foremay YUM repositories](http://yum.theforeman.org/).
 
+### Prerequisites
+
 The plugins require both Foreman and smart-proxy to be version 1.6 or later.
+
+The plugins have been tested on Fedora 19, RHEL 6 and RHEL 7. Due to old
+version of `rubygem-ffi` the smart-proxy plugin does not work on RHEL 6 unless
+you set the option `aggregate_reports` to `false` in
+`/etc/foreman-proxy/settings.d/abrt.yml`.
+
+To have hosts automatically send ureports to Foreman, you need to have ABRT
+2.1.11 or higher installed on them. RHEL 7 and Fedora 19 and higher satisfy
+this. ABRT in RHEL6 does not have ureport support, however you can use an
+[unofficial build](https://copr.fedoraproject.org/coprs/jfilak/abrt/) if you
+wish to test this feature.
 
 ### Installing the Foreman plugin
 
@@ -66,6 +79,9 @@ The plugin needs some configuration in order to work correctly.
   # URL of your foreman instance
   :foreman_url: https://f19-foreman.tld
   ```
+  Please note that the `:foreman_url:` setting may be entirely missing in the
+  file. In that case just add the line to the end of
+  `/etc/foreman-proxy/settings.yml`.
 
 - Ensure that `/etc/foreman-proxy/settings.d/abrt.yml` contains the following line:
   ```
@@ -92,12 +108,20 @@ The plugin needs some configuration in order to work correctly.
   ```
   # URL of your foreman-proxy, with /abrt path.
   URL = https://f19-smartproxy.tld:8443/abrt
-  # Do not verify server certificate.
-  SSLVerify = no
+  # Verify the server certificate.
+  SSLVerify = yes
   # This asks puppet config for the path to the ceritificates. you can
   # explicitly provide path by using /path/to/cert:/path/to/key on the
   # right hand side.
   SSLClientAuth = puppet
+  ```
+
+- Add the Puppet CA to the list of trusted certificate authorities. This is
+  needed for verifying the validity of smart-proxy's certificate:
+
+  ```
+  ~# cp /var/lib/puppet/ssl/certs/ca.pem /etc/pki/ca-trust/source/anchors/
+  ~# update-ca-trust
   ```
 
 - Enable autoreporting by running the following command:
@@ -119,7 +143,7 @@ Segmentation fault (core dumped)
 ```
 
 After a couple of seconds, a new file should appear in
-`/var/spool/foreman-proxy/abrt-send` on the smart-proxy host. The reports from
+`/var/spool/foreman-proxy-abrt` on the smart-proxy host. The reports from
 the smart-proxy are sent to the Foreman in batches every half an hour (by
 default). This means that within half an hour you should be able to see the bug
 report in the Foreman web interface. You can send the reports to Foreman
@@ -147,12 +171,7 @@ configuration screen (*Administer*->*Settings*).
 
 ## TODO
 
-- Forwarding reports on the proxy - drop it altogether, or forward the server
-  response to the client?
 - Use puppet to configure managed hosts to send ureports to Foreman.
-- Figure out how to import the Puppet CA cert on managed hosts to the system
-  certificates so that the reporter-ureport doesn't have to skip server
-  certificate validation.
 
 ## Copyright
 
