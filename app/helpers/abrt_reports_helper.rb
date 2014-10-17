@@ -29,6 +29,16 @@ module AbrtReportsHelper
     flot_bar_chart 'abrt_graph', _('Days Ago'), _('Number of crashes'), data, options
   end
 
+  class StringIOWithPath < StringIO
+    def initialize string, path, content_type
+      super(string)
+      @path = path
+      @content_type = content_type
+    end
+
+    attr_reader :path, :content_type
+  end
+
   def send_to_abrt_server abrt_report
     request_params = {
       :timeout => 60,
@@ -47,7 +57,8 @@ module AbrtReportsHelper
     end
 
     resource = RestClient::Resource.new(Setting[:abrt_server_url], request_params)
-    response = resource['reports/new/'].post({:file => abrt_report.json, :multipart => true}, :content_type => :json, :accept => :json)
+    report_file = StringIOWithPath.new(abrt_report.json, '*buffer*', 'application/json')
+    response = resource['reports/new/'].post({:file => report_file, :multipart => true}, :content_type => :json, :accept => :json)
 
     if response.code != 202
       logger.error "Failed to forward bug report: #{response.code}: #{response.to_str}"
