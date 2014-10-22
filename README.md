@@ -22,20 +22,7 @@ server.
    responds with additional information about the report, such as links to bug
    trackers or suggested solutions, it is displayed alongside the report.
 
-```
-
- +--------------+  ureport   +-------------+  aggregated ureports   +---------+
- | Managed host | ---------> | Smart proxy | ---------------------> | Foreman |
- +--------------+            +-------------+                        +---------+
-                                    :                                  :  ^
-                                    :                          ureport :  :
-                                    :                                  :  : server response
-                                    :                                  V  :
-                                    :          ureport            +-------------+
-                                    + - - - - - - - - - - - - - ->| ABRT server |
-                                                                  +-------------+
-
-```
+![foreman abrt workflow](extra/foreman_abrt_workflow.svg)
 
 ## Installation
 
@@ -43,7 +30,7 @@ To be able to see ABRT bug reports in your Foreman instance, you need to
 install the plugin itself, install ABRT plugin for your smart proxies and
 configure your hosts to send the bug reports to their smart proxy.
 
-Both plugins are available as RPMs in [Foremay YUM repositories](http://yum.theforeman.org/).
+Both plugins are available as RPMs in [Foreman YUM repositories](http://yum.theforeman.org/).
 
 ### Prerequisites
 
@@ -124,7 +111,7 @@ The plugin needs some configuration in order to work correctly.
   ~# update-ca-trust
   ```
 
-- Enable autoreporting by running the following command:
+- Enable auto-reporting by running the following command:
 
   ```
   ~# abrt-auto-reporting enabled
