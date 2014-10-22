@@ -22,7 +22,7 @@ server.
    responds with additional information about the report, such as links to bug
    trackers or suggested solutions, it is displayed alongside the report.
 
-![foreman abrt workflow](extra/foreman_abrt_workflow.svg?raw=true)
+![foreman abrt workflow](/extra/foreman_abrt_workflow.png?raw=true)
 
 ## Installation
 
