@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="856.42877"
+   width="950.47791"
    height="292.50693"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="foreman_abrt_workflow.svg">
   <defs
      id="defs4">
     <marker
@@ -54,13 +54,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="474.36301"
-     inkscape:cy="180.30964"
+     inkscape:cx="512.9121"
+     inkscape:cy="180.30965"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      fit-margin-top="5"
-     fit-margin-left="5"
+     fit-margin-left="0"
      fit-margin-right="5"
      fit-margin-bottom="5"
      units="mm"
@@ -85,7 +85,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -93,7 +93,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(90.735321,-662.33111)">
+     transform="translate(184.78442,-662.33111)">
     <g
        id="g3783"
        transform="translate(-172.53521,7.0422591)">
