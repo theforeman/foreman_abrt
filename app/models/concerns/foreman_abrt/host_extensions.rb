@@ -5,14 +5,12 @@ module ForemanAbrt::HostExtensions
     has_many :abrt_reports, :dependent => :destroy, :foreign_key => "host_id"
 
     scoped_search :in => :abrt_reports, :on => :reason,           :complete_value => true, :rename => :abrt_report_reason
-    scoped_search :in => :abrt_reports, :on => :duphash,          :complete_value => true, :rename => :abrt_report_duphash
     scoped_search :in => :abrt_reports, :on => :count,            :complete_value => true, :rename => :abrt_report_count,     :only_explicit => true
     scoped_search :in => :abrt_reports, :on => :reported_at,      :complete_value => true, :rename => :abrt_report_reported,  :only_explicit => true
 
     scoped_search :in => :abrt_reports, :on => :forwarded_at,     :complete_value => true, :rename => :abrt_report_forwarded, :only_explicit => true
     scoped_search :in => :abrt_reports, :on => :response_known,   :complete_value => true, :rename => :abrt_report_known,     :only_explicit => true
     scoped_search :in => :abrt_reports, :on => :response_message, :complete_value => true, :rename => :abrt_report_response
-    scoped_search :in => :abrt_reports, :on => :response_bthash,  :complete_value => true, :rename => :abrt_report_bthash
   end
 
   def recent_abrt_reports

@@ -8,7 +8,6 @@
   <div class="col-md-12">
     <table class="table table-bordered table-striped">
       <tr><th><%= _('Known problem') %></th><td><%= @abrt_report.response_known %></td></tr>
-      <tr><th><%= _('Server hash') %></th><td><%= @abrt_report.response_bthash %></td></tr>
       <tr><th><%= _('Message') %></th><td><%= simple_format_if_multiline @abrt_report.response_message %></td></tr>
     </table>
   </div>
