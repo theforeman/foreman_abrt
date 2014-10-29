@@ -52,10 +52,15 @@ wish to test this feature.
 To install the Foreman plugin, follow the [plugin installation
 instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Plugin).
 
+You need to install the `rubygem-foreman_abrt` package (or
+`ruby193-rubygem-foreman_abrt` on RHEL/CentOS).
+
 ### Setting up smart proxies
 
 Follow the [smart-proxy plugin installation
 instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Smart-Proxy_Plugin).
+You need to install the `rubygem-smart_proxy_abrt` package.
+
 The plugin needs some configuration in order to work correctly.
 
 - Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
