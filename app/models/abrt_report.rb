@@ -40,8 +40,28 @@ class AbrtReport < ActiveRecord::Base
   scoped_search :in => :abrt_report_response_solutions, :on => :url,   :complete_value => true, :rename => :solution_url
 
   def self.import(json)
-    host    = Host.find_by_name(json[:host])
     reports = []
+    host    = Host.find_by_name(json[:host])
+
+    # If the host lookup failed, it is possible that we are using subscription management certificates which
+    # have UUID in their CN instead of host's FQDN. Try asking Katello if it knows host with such UUID.
+    if host.nil? && defined?(::Katello::System) && content_host = ::Katello::System.find_by_uuid(json[:host])
+        host = content_host.foreman_host
+    end
+
+    # The subscription management certificate also has (what is likely) FQDN in the subjectAltName certificate field.
+    # Try finding such host as a last resort.
+    if host.nil? && !json[:althosts].nil?
+      json[:althosts].each do |hostname|
+        host = Host.find_by_name(hostname)
+        break unless host.nil?
+      end
+    end
+
+    if host.nil?
+      logger.error "Unable to find host #{json[:host]}"
+      return []
+    end
 
     json[:reports].each do |report|
       begin

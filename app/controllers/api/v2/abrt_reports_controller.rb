@@ -18,7 +18,7 @@ module Api
         end
 
         if abrt_reports.count == 0
-          render :json => { 'Failed to import any report' => e.try(:message) }, :status => :unprocessable_entity
+          render :json => { 'message' => 'Failed to import any report'}, :status => :unprocessable_entity
           return
         end
 
