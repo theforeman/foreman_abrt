@@ -1,3 +1,5 @@
+require 'date'
+
 require File.expand_path('../lib/foreman_abrt/version', __FILE__)
 
 Gem::Specification.new do |s|
