@@ -2,7 +2,7 @@ module ForemanAbrt::HostExtensions
   extend ActiveSupport::Concern
 
   included do
-    has_many :abrt_reports, :dependent => :destroy, :foreign_key => "host_id"
+    has_many :abrt_reports, :dependent => :destroy, :foreign_key => 'host_id'
 
     scoped_search :in => :abrt_reports, :on => :reason,           :complete_value => true, :rename => :abrt_report_reason
     scoped_search :in => :abrt_reports, :on => :count,            :complete_value => true, :rename => :abrt_report_count,     :only_explicit => true

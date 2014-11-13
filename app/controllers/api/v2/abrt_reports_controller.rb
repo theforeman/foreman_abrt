@@ -13,12 +13,12 @@ module Api
         rescue => e
           logger.error "Failed to import ABRT report: #{e.message}"
           logger.debug e.backtrace.join("\n")
-          render :json => { "message" => e.message }, :status => :unprocessable_entity
+          render :json => { 'message' => e.message }, :status => :unprocessable_entity
           return
         end
 
         if abrt_reports.count == 0
-          render :json => { "Failed to import any report" => e.message }, :status => :unprocessable_entity
+          render :json => { 'Failed to import any report' => e.try(:message) }, :status => :unprocessable_entity
           return
         end
 
@@ -35,7 +35,7 @@ module Api
 
         # Do not report forwarding error to the proxy, we can manually resend
         # it later and the proxy probably can't do anything about it anyway.
-        render :json => { "message" => "OK" }
+        render :json => { 'message' => 'OK' }
       end
 
     end

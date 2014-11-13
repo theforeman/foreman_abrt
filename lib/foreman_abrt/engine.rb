@@ -14,7 +14,7 @@ module ForemanAbrt
     end
 
     # Add any db migrations
-    initializer "foreman_abrt.load_app_instance_data" do |app|
+    initializer 'foreman_abrt.load_app_instance_data' do |app|
       app.config.paths['db/migrate'] += ForemanAbrt::Engine.paths['db/migrate'].existent
     end
 
@@ -31,7 +31,7 @@ module ForemanAbrt
         end
 
         # Add a new role
-        role "ABRT reports handling", [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports]
+        role 'ABRT reports handling', [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports]
 
         #add menu entry
         menu :top_menu, :template,

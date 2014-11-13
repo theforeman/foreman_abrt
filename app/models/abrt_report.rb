@@ -40,13 +40,13 @@ class AbrtReport < ActiveRecord::Base
   scoped_search :in => :abrt_report_response_solutions, :on => :url,   :complete_value => true, :rename => :solution_url
 
   def self.import(json)
-    host = Host.find_by_name(json[:host])
+    host    = Host.find_by_name(json[:host])
     reports = []
 
     json[:reports].each do |report|
       begin
-        reports << AbrtReport.create!(:host => host, :count => report[:count], :json => report[:full].to_json,
-                                      :duphash => report[:duphash], :reason => report[:full][:reason],
+        reports << AbrtReport.create!(:host        => host, :count => report[:count], :json => report[:full].to_json,
+                                      :duphash     => report[:duphash], :reason => report[:full][:reason],
                                       :reported_at => report[:reported_at])
       rescue => e
         logger.error "Failed to import ABRT report from #{host}: #{e.class}:#{e.message}"
@@ -61,17 +61,17 @@ class AbrtReport < ActiveRecord::Base
       abrt_report_response_solutions.clear
       abrt_report_response_destinations.clear
 
-      self.forwarded_at = Time.now
-      self.response_known = response['result']
+      self.forwarded_at     = Time.now
+      self.response_known   = response['result']
       self.response_message = response['message']
-      self.response_bthash = response['bthash']
+      self.response_bthash  = response['bthash']
 
       if response['solutions']
         response['solutions'].each do |solution|
           abrt_report_response_solutions.create!(
             :cause => solution['cause'],
-            :note => solution['note'],
-            :url => solution['url']
+            :note  => solution['note'],
+            :url   => solution['url']
           )
         end
       end
@@ -80,7 +80,7 @@ class AbrtReport < ActiveRecord::Base
         response['reported_to'].each do |destination|
           abrt_report_response_destinations.create!(
             :desttype => destination['type'],
-            :value => destination['value'],
+            :value    => destination['value'],
             :reporter => destination['reporter']
           )
         end

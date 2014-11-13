@@ -7,8 +7,14 @@
 <div class="row">
   <div class="col-md-12">
     <table class="table table-bordered table-striped">
-      <tr><th><%= _('Known problem') %></th><td><%= @abrt_report.response_known %></td></tr>
-      <tr><th><%= _('Message') %></th><td><%= simple_format_if_multiline @abrt_report.response_message %></td></tr>
+      <tr>
+        <th><%= _('Known problem') %></th>
+        <td><%= @abrt_report.response_known %></td>
+      </tr>
+      <tr>
+        <th><%= _('Message') %></th>
+        <td><%= simple_format_if_multiline @abrt_report.response_message %></td>
+      </tr>
     </table>
   </div>
 </div>
@@ -18,7 +24,7 @@
     <h3>Reported to</h3>
     <% if !@abrt_report.abrt_report_response_destinations.empty? %>
       <table class="table table-bordered table-striped">
-        <% for destination in @abrt_report.abrt_report_response_destinations %>
+        <% @abrt_report.abrt_report_response_destinations.each do |destination| %>
           <tr>
             <% if destination.desttype == 'url' %>
               <td><a href="<%= destination.value %>"><%= destination.reporter %></a></td>
@@ -38,7 +44,7 @@
     <h3>Solutions</h3>
     <% if !@abrt_report.abrt_report_response_solutions.empty? %>
       <table class="table table-bordered table-striped">
-        <% for solution in @abrt_report.abrt_report_response_solutions %>
+        <% @abrt_report.abrt_report_response_solutions.each do |solution| %>
           <tr>
             <% if solution.url %>
               <td><a href="<%= solution.url %>"><%= solution.cause %></a></td>
