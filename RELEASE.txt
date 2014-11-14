@@ -1,0 +1,7 @@
+1. Increment version in lib/foreman_abrt/version.rb
+2. $ git commit -a -m "Release X.Y.Z"
+3. $ git tag X.Y.Z
+4. $ git push && git push --tags
+5. $ gem build foreman_abrt.gemspec
+6. $ gem push foreman_abrt-X.Y.Z.gem
+7. Follow https://github.com/theforeman/foreman-packaging/blob/rpm/develop/README.md#howto-update-a-package
