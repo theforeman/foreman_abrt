@@ -34,12 +34,9 @@ Both plugins are available as RPMs in [Foreman YUM repositories](http://yum.thef
 
 ### Prerequisites
 
-The plugins require both Foreman and smart-proxy to be version 1.6 or later.
+The plugins require both Foreman and smart-proxy to be version 1.7 or later.
 
-The plugins have been tested on Fedora 19, RHEL 6 and RHEL 7. Due to old
-version of `rubygem-ffi` the smart-proxy plugin does not work on RHEL 6 unless
-you set the option `aggregate_reports` to `false` in
-`/etc/foreman-proxy/settings.d/abrt.yml`.
+The plugins have been tested on Fedora 19, RHEL 6 and RHEL 7.
 
 To have hosts automatically send ureports to Foreman, you need to have ABRT
 2.1.11 or higher installed on them. RHEL 7 and Fedora 19 and higher satisfy
@@ -86,6 +83,9 @@ The plugin needs some configuration in order to work correctly.
   minutes.
 
 ### Configuring hosts to send bug reports to Foreman
+
+This setup needs to be performed on every host that you wish to report its
+crashes to Foreman.
 
 - Make sure that ABRT is installed and running.
   ```
