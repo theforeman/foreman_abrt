@@ -52,7 +52,7 @@ instructions](http://projects.theforeman.org/projects/foreman/wiki/How_to_Instal
 You need to install the `rubygem-foreman_abrt` package (or
 `ruby193-rubygem-foreman_abrt` on RHEL/CentOS).
 
-After installing the plugin, restart Foreman with `service foreman restart`.
+After installing the plugin, restart Foreman with `touch /usr/share/foreman/tmp/restart.txt`.
 
 ### Setting up smart proxies
 
