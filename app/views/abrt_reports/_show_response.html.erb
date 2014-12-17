@@ -5,23 +5,8 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
-    <table class="table table-bordered table-striped">
-      <tr>
-        <th><%= _('Known problem') %></th>
-        <td><%= @abrt_report.response_known %></td>
-      </tr>
-      <tr>
-        <th><%= _('Message') %></th>
-        <td><%= simple_format_if_multiline @abrt_report.response_message %></td>
-      </tr>
-    </table>
-  </div>
-</div>
-
-<div class="row">
   <div class="col-md-6">
-    <h3>Reported to</h3>
+    <h3>Reports</h3>
     <% if !@abrt_report.abrt_report_response_destinations.empty? %>
       <table class="table table-bordered table-striped">
         <% @abrt_report.abrt_report_response_destinations.each do |destination| %>
