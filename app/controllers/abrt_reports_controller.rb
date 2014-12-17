@@ -30,7 +30,7 @@ class AbrtReportsController < ApplicationController
   # DELETE /abrt_reports/42
   def destroy
     if @abrt_report.destroy
-      notice _("Successfully deleted bug report.")
+      notice _("Successfully deleted problem report.")
     else
       error @abrt_reports.errors.full_messages.join("<br/>")
     end

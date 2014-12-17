@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.email       = ["mmilata@redhat.com"]
   s.homepage    = "http://github.com/abrt/foreman_abrt"
   s.summary     = "Display reports from Automatic Bug Reporting Tool"
-  s.description = "Foreman plugin that allows you to see bug reports submitted "\
-                  "by Automatic Bug Reporting Tool."
+  s.description = "Foreman plugin that allows you to see problem reports "\
+                  "submitted by Automatic Bug Reporting Tool."
   s.license     = "GPL-3.0"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]

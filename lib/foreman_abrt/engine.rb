@@ -36,12 +36,12 @@ module ForemanAbrt
         #add menu entry
         menu :top_menu, :template,
              :url_hash => {:controller => :'abrt_reports', :action => :index},
-             :caption  => _('Bug reports'),
+             :caption  => _('Problem reports'),
              :parent   => :monitor_menu,
              :after    => :reports
 
         # add dashboard widget
-        widget 'foreman_abrt_widget', :name => N_('Bug report chart'), :sizex => 6, :sizey => 1
+        widget 'foreman_abrt_widget', :name => N_('Problem report chart'), :sizex => 6, :sizey => 1
       end
     end
 

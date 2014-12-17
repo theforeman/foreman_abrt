@@ -24,7 +24,7 @@
       <td> <%= checked_icon !abrt_report.forwarded_at.nil? %> </td>
       <td align="right">
         <%= display_delete_if_authorized hash_for_abrt_report_path(:id => abrt_report.id).merge(:auth_object => abrt_report, :authorizer => authorizer),
-                                         :confirm => _('Delete bug report for %s?') % abrt_report.host.try(:name) %>
+                                         :confirm => _('Delete problem report for %s?') % abrt_report.host.try(:name) %>
       </td>
     </tr>
   <% end %>

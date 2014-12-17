@@ -14,8 +14,8 @@
         </tr>
       <% end %>
     </table>
-    <%= link_to _('All bug reports for this host'), host_abrt_reports_path(@host), :class => 'btn btn-default' %>
+    <%= link_to _('All reports for this host'), host_abrt_reports_path(@host), :class => 'btn btn-default' %>
   <% else %>
-    <div class="alert alert-success"> <%= _('No bug reports for this host in the last month') %> </div>
+    <div class="alert alert-success"> <%= _('No problem reports for this host in the last month') %> </div>
   <% end %>
 </div>

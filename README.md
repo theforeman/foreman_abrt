@@ -1,7 +1,7 @@
 # ForemanAbrt
 
-This plugin allows your Foreman instance to receive bug reports generated on
-your hosts by [ABRT](https://github.com/abrt/abrt) (Automatic Bug Reporting
+This plugin allows your Foreman instance to receive problem reports generated
+on your hosts by [ABRT](https://github.com/abrt/abrt) (Automatic Bug Reporting
 Tool). These reports can be inspected and eventually sent to the ABRT server
 for analysis.
 
@@ -27,9 +27,9 @@ for analysis.
 
 ## Installation
 
-To be able to see ABRT bug reports in your Foreman instance, you need to
+To be able to see ABRT problem reports in your Foreman instance, you need to
 install the plugin itself, install ABRT plugin for your smart proxies and
-configure your hosts to send the bug reports to their smart proxy.
+configure your hosts to send the problem reports to their smart proxy.
 
 Both plugins are available as RPMs in [Foreman YUM repositories](http://yum.theforeman.org/).
 
@@ -85,12 +85,12 @@ The plugin needs some configuration in order to work correctly.
   service foreman-proxy restart
   ```
 
-- Cron is used to transfer the captured bug reports to Foreman in batches.
+- Cron is used to transfer the captured problem reports to Foreman in batches.
   Ensure that the `smart-proxy-abrt-send` command is run periodically. The
   provided RPM package contains a cron snippet that runs the command every 30
   minutes.
 
-### Configuring hosts to send bug reports to Foreman
+### Configuring hosts to send problem reports to Foreman
 
 This setup needs to be performed on every host that you wish to report its
 crashes to Foreman.
@@ -159,20 +159,20 @@ make sure not to actually report this to `sleep` maintainers, though:
 
 ## Usage
 
-The list of received bug reports can be accessed by clicking on *Bug reports*
-link in the *Monitor* menu. To see detailed information for a report, click on
-its reported date.
+The list of received problem reports can be accessed by clicking on *Problem
+reports* link in the *Monitor* menu. To see detailed information for a report,
+click on its reported date.
 
-List of bug reports coming from a particular host is also displayed on the page
-with the details about the host in the *Bug reports* tab on the left.
+List of problem reports coming from a particular host is also displayed on the
+page with the details about the host in the *Problem reports* tab on the left.
 
 ### Forwarding the report to the ABRT server
 
-On the bug report details page you can forward the bug report to an actual
-ABRT server by clicking the *Send for analysis* button. The ABRT server may
-respond with some information it knows about the bug, such as the list of URLs
-related to the bug (e.g. Bugzilla link) and list of possible solutions to the
-problem that caused the bug to occur.
+On the problem report details page you can forward the problem report to an
+actual ABRT server by clicking the *Send for analysis* button. The ABRT server
+may respond with some information it knows about the bug, such as the list of
+URLs related to the bug (e.g. Bugzilla link) and list of possible solutions to
+the problem that caused the bug to occur.
 
 The forwarding functionality may have to be configured in *Abrt* tab of the
 configuration screen (*Administer*->*Settings*).
