@@ -61,8 +61,8 @@ module AbrtReportsHelper
     response    = resource['reports/new/'].post({ :file => report_file, :multipart => true }, :content_type => :json, :accept => :json)
 
     if response.code != 202
-      logger.error "Failed to forward bug report: #{response.code}: #{response.to_str}"
-      raise ::Foreman::Exception.new(N_('Failed to forward bug report: %s: %s', response.code, response.to_str))
+      logger.error "Failed to send the report for analysis: #{response.code}: #{response.to_str}"
+      raise ::Foreman::Exception.new(N_('Failed to forward problem report: %s: %s', response.code, response.to_str))
     end
 
     JSON.parse(response.body)

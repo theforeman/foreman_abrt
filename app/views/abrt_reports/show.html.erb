@@ -2,11 +2,11 @@
 
 <%= title_actions link_to(_('Host details'), @abrt_report.host),
                   link_to(_('Other reports for this host'), host_abrt_reports_path(@abrt_report.host)),
-                  link_to(_('Forward report'),
+                  link_to(_('Send for analysis'),
                           forward_abrt_report_path(@abrt_report),
                           :class   => 'btn btn-success',
                           :method  => :post,
-                          :confirm => @abrt_report.forwarded_at ? _('The report has already been sent to the ABRT server. Send again and overwrite the previous response?') : nil),
+                          :confirm => @abrt_report.forwarded_at ? _('The report has already been sent. Send again and overwrite the previous response?') : nil),
                   display_delete_if_authorized(hash_for_abrt_report_path(:id => @abrt_report), :class => 'btn btn-danger')
 %>
 
@@ -36,7 +36,7 @@
 <% else %>
   <div class="row">
     <div class="col-md-12">
-      <p><%= _("The report hasn't been forwarded to ABRT server.") %></p>
+      <p><%= _("The report hasn't been sent for analysis.") %></p>
     </div>
   </div>
 <% end %>

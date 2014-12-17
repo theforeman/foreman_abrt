@@ -53,7 +53,7 @@ class AbrtReportsController < ApplicationController
       error _("Cannot process server response: #{e.message}") and return
     end
 
-    notice _("Report successfully forwarded")
+    notice _("Report sent for analysis")
   end
 
   private

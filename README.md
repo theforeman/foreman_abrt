@@ -2,8 +2,8 @@
 
 This plugin allows your Foreman instance to receive bug reports generated on
 your hosts by [ABRT](https://github.com/abrt/abrt) (Automatic Bug Reporting
-Tool). These reports can be inspected and eventually forwarded to the ABRT
-server.
+Tool). These reports can be inspected and eventually sent to the ABRT server
+for analysis.
 
 ## Overview
 
@@ -18,9 +18,10 @@ server.
      instance of set of similar reports from a host is sent, together with
      number of the reports in the set.
 3. Foreman receives the aggregated report and stores it to the database. The
-   reports can be inspected and forwarded to the ABRT server. If the server
-   responds with additional information about the report, such as links to bug
-   trackers or suggested solutions, it is displayed alongside the report.
+   reports can be inspected and forwarded ("sent for analysis") to the ABRT
+   server. If the server responds with additional information about the report,
+   such as links to bug trackers or suggested solutions, it is displayed
+   alongside the report.
 
 ![foreman abrt workflow](/extra/foreman_abrt_workflow.png?raw=true)
 
@@ -168,7 +169,7 @@ with the details about the host in the *Bug reports* tab on the left.
 ### Forwarding the report to the ABRT server
 
 On the bug report details page you can forward the bug report to an actual
-ABRT server by clicking the *Forward report* button. The ABRT server may
+ABRT server by clicking the *Send for analysis* button. The ABRT server may
 respond with some information it knows about the bug, such as the list of URLs
 related to the bug (e.g. Bugzilla link) and list of possible solutions to the
 problem that caused the bug to occur.
