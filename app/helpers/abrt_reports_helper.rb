@@ -39,7 +39,7 @@ module AbrtReportsHelper
     attr_reader :path, :content_type
   end
 
-  def send_to_abrt_server(abrt_report)
+  def send_to_abrt_server(abrt_report, username = nil, password = nil)
     request_params = {
       :timeout      => 60,
       :open_timeout => 10,
@@ -54,6 +54,12 @@ module AbrtReportsHelper
        && Setting[:abrt_server_ssl_priv_key] && !Setting[:abrt_server_ssl_priv_key].empty?
       request_params[:ssl_client_cert] = OpenSSL::X509::Certificate.new(File.read(Setting[:abrt_server_ssl_certificate]))
       request_params[:ssl_client_key]  = OpenSSL::PKey::RSA.new(File.read(Setting[:abrt_server_ssl_priv_key]))
+    end
+
+    # basic auth
+    if username && password
+      request_params[:user] = username
+      request_params[:password] = password
     end
 
     resource    = RestClient::Resource.new(Setting[:abrt_server_url], request_params)
@@ -73,6 +79,48 @@ module AbrtReportsHelper
       _('Unknown')
     else
       reason
+    end
+  end
+
+  def using_redhat_server
+    match = %r{^https://[^/]*access\.redhat\.com/}.match(Setting[:abrt_server_url])
+    !!match
+  end
+
+  def display_forward_button(abrt_report)
+    if Setting[:abrt_server_requires_basic_auth] || using_redhat_server
+      button_tag _('Send for analysis'), :id => 'forward_auth_button', :class => 'btn btn-success'
+    else
+      options = { :class => 'btn btn-success', :method => :post }
+      if abrt_report.forwarded_at
+        options[:confirm] = _('The report has already been sent. Sending it again will overwrite the previous response.')
+      end
+      link_to _('Send for analysis'), forward_abrt_report_path(abrt_report), options
+    end
+  end
+
+  def forward_auth_title
+    if using_redhat_server
+      _('Please provide Red Hat Customer Portal credentials')
+    else
+      _('Please provide ABRT server credentials')
+    end
+  end
+
+  def forward_auth_login
+    if using_redhat_server
+      _('Red Hat Login')
+    else
+      _('Login')
+    end
+  end
+
+  def forward_auth_text
+    if using_redhat_server
+      _('The problem report will be sent to Red Hat in order to determine if a solution exists. '\
+        'You need to provide your Red Hat Customer Portal login and password in order to proceed.')
+    else
+      _('Your ABRT server is configured to require login and password.')
     end
   end
 end

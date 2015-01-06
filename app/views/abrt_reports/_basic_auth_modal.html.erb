@@ -1,0 +1,40 @@
+<div id="forward_auth" class="modal fade hide">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <%= alert_close('modal') %>
+        <h4 class="modal-title"><%= forward_auth_title %></h4>
+      </div>
+      <div class="modal-body">
+        <% if forward_auth_text %>
+          <p><%= forward_auth_text %></p><br>
+        <% end %>
+        <%= form_tag forward_abrt_report_path(@abrt_report), :class => 'form form-horizontal' do %>
+          <div class="form-group">
+            <%= label_tag :username, forward_auth_login, :class => 'col-sm-3 control-label' %>
+            <div class="col-sm-9">
+              <%= text_field_tag :username, nil, :class => 'form-control' %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= label_tag :password, _("Password"), :class => 'col-sm-3 control-label' %>
+            <div class="col-sm-9">
+              <%= password_field_tag :password, nil, :class => 'form-control' %>
+            </div>
+          </div>
+          <% if @abrt_report.forwarded_at %>
+            <div class="alert alert-warning">
+              <%= _('The report has already been sent. Sending it again will overwrite the previous response.') %>
+            </div>
+          <% end %>
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <%= submit_tag _('Send for analysis'), :class => 'btn btn-success' %>
+              <%= modal_close 'modal', _('Cancel') %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

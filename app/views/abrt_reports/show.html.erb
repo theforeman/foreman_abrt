@@ -1,12 +1,9 @@
+<% javascript 'abrt_reports' %>
 <% title @abrt_report.host.to_s %>
 
 <%= title_actions link_to(_('Host details'), @abrt_report.host),
                   link_to(_('Other reports for this host'), host_abrt_reports_path(@abrt_report.host)),
-                  link_to(_('Send for analysis'),
-                          forward_abrt_report_path(@abrt_report),
-                          :class   => 'btn btn-success',
-                          :method  => :post,
-                          :confirm => @abrt_report.forwarded_at ? _('The report has already been sent. Send again and overwrite the previous response?') : nil),
+                  display_forward_button(@abrt_report),
                   display_delete_if_authorized(hash_for_abrt_report_path(:id => @abrt_report), :class => 'btn btn-danger')
 %>
 
@@ -39,4 +36,8 @@
       <p><%= _("The report hasn't been sent for analysis.") %></p>
     </div>
   </div>
+<% end %>
+
+<% if ask_for_auth? %>
+  <%= render :partial => 'basic_auth_modal' %>
 <% end %>

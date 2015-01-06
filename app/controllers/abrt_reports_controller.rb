@@ -42,7 +42,7 @@ class AbrtReportsController < ApplicationController
     redirect_to abrt_report_url(@abrt_report)
 
     begin
-      response = send_to_abrt_server @abrt_report
+      response = send_to_abrt_server @abrt_report, params[:username], params[:password]
     rescue => e
       error _("Server rejected our report: #{e.message}") and return
     end
