@@ -22,6 +22,16 @@
               <%= password_field_tag :password, nil, :class => 'form-control' %>
             </div>
           </div>
+          <% if defined? ::RedhatAccess %>
+            <div class="form-group" id="redhat_access_alert_use" style="display: none;">
+              <div class="col-sm-offset-3 col-sm-9">
+                 <%= link_to _("Use Red Hat Access credentials"), '#', :id => 'redhat_access_fill' %>
+              </div>
+            </div>
+            <div class="alert alert-info" id="redhat_access_alert_login">
+               <%= (_("You can log into %s to avoid typing your credentials.") % link_to('Red Hat Access', ::RedhatAccess::Engine.routes.url_helpers.search_index_path)).html_safe %>
+            </div>
+          <% end %>
           <% if @abrt_report.forwarded_at %>
             <div class="alert alert-warning">
               <%= _('The report has already been sent. Sending it again will overwrite the previous response.') %>
