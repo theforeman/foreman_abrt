@@ -57,7 +57,10 @@ module AbrtReportsHelper
     end
 
     # basic auth
-    if username && password
+    if !Setting[:abrt_server_basic_auth_username].empty? && !Setting[:abrt_server_basic_auth_password].empty?
+      request_params[:user] = Setting[:abrt_server_basic_auth_username]
+      request_params[:password] = Setting[:abrt_server_basic_auth_password]
+    elsif username && password
       request_params[:user] = username
       request_params[:password] = password
     end
@@ -82,13 +85,23 @@ module AbrtReportsHelper
     end
   end
 
-  def using_redhat_server
+  def using_redhat_server?
     match = %r{^https://[^/]*access\.redhat\.com/}.match(Setting[:abrt_server_url])
     !!match
   end
 
+  def ask_for_auth?
+    if !Setting[:abrt_server_basic_auth_username].empty? && !Setting[:abrt_server_basic_auth_password].empty?
+      false
+    elsif Setting[:abrt_server_basic_auth_required] || using_redhat_server?
+      true
+    else
+      false
+    end
+  end
+
   def display_forward_button(abrt_report)
-    if Setting[:abrt_server_requires_basic_auth] || using_redhat_server
+    if ask_for_auth?
       button_tag _('Send for analysis'), :id => 'forward_auth_button', :class => 'btn btn-success'
     else
       options = { :class => 'btn btn-success', :method => :post }
@@ -100,7 +113,7 @@ module AbrtReportsHelper
   end
 
   def forward_auth_title
-    if using_redhat_server
+    if using_redhat_server?
       _('Please provide Red Hat Customer Portal credentials')
     else
       _('Please provide ABRT server credentials')
@@ -108,7 +121,7 @@ module AbrtReportsHelper
   end
 
   def forward_auth_login
-    if using_redhat_server
+    if using_redhat_server?
       _('Red Hat Login')
     else
       _('Login')
@@ -116,7 +129,7 @@ module AbrtReportsHelper
   end
 
   def forward_auth_text
-    if using_redhat_server
+    if using_redhat_server?
       _('The problem report will be sent to Red Hat in order to determine if a solution exists. '\
         'You need to provide your Red Hat Customer Portal login and password in order to proceed.')
     else
