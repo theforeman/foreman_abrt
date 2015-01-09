@@ -1,6 +1,9 @@
 <div class="row">
   <div class="col-md-12">
     <p><%= _('The report has been sent for analysis on %s.') % @abrt_report.forwarded_at.getlocal %></p>
+    <% if !params[:show_bthash].nil? %>
+      <p> <%= _('bthash: %s') % @abrt_report.response_bthash %> </p>
+    <% end %>
   </div>
 </div>
 
