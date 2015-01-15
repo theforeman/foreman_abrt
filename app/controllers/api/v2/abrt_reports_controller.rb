@@ -5,7 +5,7 @@ module Api
       include Foreman::Controller::SmartProxyAuth
       include AbrtReportsHelper
 
-      add_puppetmaster_filters :create
+      add_smart_proxy_filters :create, :features => 'Abrt'
 
       def create
         begin
