@@ -25,6 +25,14 @@ for analysis.
 
 ![foreman abrt workflow](/extra/foreman_abrt_workflow.png?raw=true)
 
+### Network ports
+
+Reports from managed hosts are sent to smart-proxy's https port which is 8443
+for standalone Foreman installations and 9090 for Katello.
+
+The proxy sends the reports using Foreman's API, which normally runs on
+standard https (port 443).
+
 ## Installation
 
 To be able to see ABRT problem reports in your Foreman instance, you need to
