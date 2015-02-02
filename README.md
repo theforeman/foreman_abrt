@@ -39,13 +39,19 @@ To be able to see ABRT problem reports in your Foreman instance, you need to
 install the plugin itself, install ABRT plugin for your smart proxies and
 configure your hosts to send the problem reports to their smart proxy.
 
+Please note that the configuration is slightly different when using Foreman
+stand-alone and when it is part of Katello. Any configuration specific to
+**Katello** will be explicitly indicated.
+
 Both plugins are available as RPMs in [Foreman YUM repositories](http://yum.theforeman.org/).
 
 ### Prerequisites
 
 The plugins require both Foreman and smart-proxy to be version 1.7 or later.
 
-The plugins have been tested on Fedora 19, RHEL 6 and RHEL 7.
+The plugins have been tested on Fedora 19, RHEL 6 and RHEL 7. Versions of the
+plugins compatible with Katello are `foreman_abrt-0.0.4` and
+`smart_proxy_abrt-0.0.6`.
 
 To have hosts automatically send ureports to Foreman, you need to have ABRT
 2.1.11 or higher installed on them. RHEL 7 and Fedora 19 and higher satisfy
@@ -71,17 +77,37 @@ You need to install the `rubygem-smart_proxy_abrt` package.
 
 The plugin needs some configuration in order to work correctly.
 
-- Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
-  which is normally not needed. Assuming Foreman runs on `f19-foreman.tld` the
+- **WORKAROUND** - installer should do this for us, see
+  [upstream bug](http://projects.theforeman.org/issues/8373), [bugzilla](https://bugzilla.redhat.com/show_bug.cgi?id=1180666).
+
+  Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
+  which is normally not needed. Assuming Foreman runs on `foreman.tld` the
   file should contain following:
 
   ```
   # URL of your foreman instance
-  :foreman_url: https://f19-foreman.tld
+  :foreman_url: https://foreman.tld
   ```
   Please note that the `:foreman_url:` setting may be entirely missing in the
   file. In that case just add the line to the end of
   `/etc/foreman-proxy/settings.yml`.
+
+- **Katello only, WORKAROUND** - see [upstream bug](http://projects.theforeman.org/issues/8372), [bugzilla](https://bugzilla.redhat.com/show_bug.cgi?id=1180051).
+
+  Configure the ssl keys used to send requests to foreman. Make sure
+  `/etc/foreman-proxy/settings.yml` contains:
+
+  ```
+  :foreman_ssl_cert: /etc/puppet/client_cert.pem
+  :foreman_ssl_key: /etc/puppet/client_key.pem
+  :foreman_ssl_ca: /etc/puppet/ssl_ca.pem
+  ```
+
+  You also need to change the permissions of the private key in order to use it:
+  ```
+  # chown puppet:foreman-proxy /etc/puppet/client_key.pem
+  # chmod 440 /etc/puppet/client_key.pem
+  ```
 
 - Ensure that `/etc/foreman-proxy/settings.d/abrt.yml` contains the following line:
   ```
@@ -101,7 +127,8 @@ The plugin needs some configuration in order to work correctly.
 ### Configuring hosts to send problem reports to Foreman
 
 This setup needs to be performed on every host that you wish to report its
-crashes to Foreman.
+crashes to Foreman. The host has to be managed by Puppet, i.e. host record must
+exist in Foreman web interface.
 
 - Make sure that ABRT is installed and running.
   ```
@@ -110,18 +137,39 @@ crashes to Foreman.
   ~# systemctl start abrt-ccpp
   ```
 
+- Enable auto-reporting by running the following command:
+
+  ```
+  ~# abrt-auto-reporting enabled
+  ```
+
 - Configure ABRT reporting destination -
   `/etc/libreport/plugins/ureport.conf` should contain following:
 
   ```
   # URL of your foreman-proxy, with /abrt path.
-  URL = https://f19-smartproxy.tld:8443/abrt
+  URL = https://smartproxy.tld:8443/abrt
   # Verify the server certificate.
   SSLVerify = yes
   # This asks puppet config for the path to the ceritificates. you can
   # explicitly provide path by using /path/to/cert:/path/to/key on the
   # right hand side.
   SSLClientAuth = puppet
+  ```
+
+  **Katello:** when using Foreman with Katello, the host needs to be registered
+  (using subscription-manager) to your Katello instance. You can find the
+  registration instructions on `https://foreman.tld/content_hosts/register`.
+  The `/etc/libreport/plugins/ureport.conf` file should instead contain the
+  following:
+
+  ```
+  # URL of your foreman-proxy, with /abrt path.
+  URL = https://smartproxy.tld:9090/abrt
+  # Verify the server certificate.
+  SSLVerify = yes
+  # Use the subscription management certificates to authenticate to the proxy.
+  SSLClientAuth = /etc/pki/consumer/cert.pem:/etc/pki/consumer/key.pem
   ```
 
 - Add the Puppet CA to the list of trusted certificate authorities. This is
@@ -132,16 +180,18 @@ crashes to Foreman.
   ~# update-ca-trust
   ```
 
-- Enable auto-reporting by running the following command:
+  **Katello:** when using Foreman with Katello, the subscription management
+  certificate should be used instead:
 
   ```
-  ~# abrt-auto-reporting enabled
+  ~# cp /etc/rhsm/ca/katello-server-ca.pem /etc/pki/ca-trust/source/anchors/
+  ~# update-ca-trust
   ```
 
 ### Verifying that the setup works
 
 You can verify your setup by crashing something on your managed host. We have a
-set of utilities in the Fedora repository especially for this purpose:
+set of utilities in the Fedora/EPEL repository especially for this purpose:
 
 ```
 ~# yum -y install will-crash
@@ -167,6 +217,16 @@ maintainers, though:
 ~$ sleep 1d &
 ~$ kill -SEGV $!
 ```
+
+### Testing aggregation
+
+If you crash the same program twice (on one host) within the same period that
+smart-proxy waits between forwarding the reports to foreman, then only one
+report with count = 2 should appear in the web interface.
+
+However, be careful about ABRT's rate limiting - if you crash a program
+and then crash it again sooner that 20 seconds then the second crash is
+simply ignored.
 
 ## Usage
 
