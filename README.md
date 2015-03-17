@@ -77,38 +77,6 @@ You need to install the `rubygem-smart_proxy_abrt` package.
 
 The plugin needs some configuration in order to work correctly.
 
-- **WORKAROUND** - installer should do this for us, see
-  [upstream bug](http://projects.theforeman.org/issues/8373), [bugzilla](https://bugzilla.redhat.com/show_bug.cgi?id=1180666).
-
-  Edit `/etc/foreman-proxy/settings.yml` to configure the main Foreman host,
-  which is normally not needed. Assuming Foreman runs on `foreman.tld` the
-  file should contain following:
-
-  ```
-  # URL of your foreman instance
-  :foreman_url: https://foreman.tld
-  ```
-  Please note that the `:foreman_url:` setting may be entirely missing in the
-  file. In that case just add the line to the end of
-  `/etc/foreman-proxy/settings.yml`.
-
-- **Katello only, WORKAROUND** - see [upstream bug](http://projects.theforeman.org/issues/8372), [bugzilla](https://bugzilla.redhat.com/show_bug.cgi?id=1180051).
-
-  Configure the ssl keys used to send requests to foreman. Make sure
-  `/etc/foreman-proxy/settings.yml` contains:
-
-  ```
-  :foreman_ssl_cert: /etc/puppet/client_cert.pem
-  :foreman_ssl_key: /etc/puppet/client_key.pem
-  :foreman_ssl_ca: /etc/puppet/ssl_ca.pem
-  ```
-
-  You also need to change the permissions of the private key in order to use it:
-  ```
-  # chown puppet:foreman-proxy /etc/puppet/client_key.pem
-  # chmod 440 /etc/puppet/client_key.pem
-  ```
-
 - Ensure that `/etc/foreman-proxy/settings.d/abrt.yml` contains the following line:
   ```
   :enabled: true
