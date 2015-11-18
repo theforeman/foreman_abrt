@@ -41,7 +41,7 @@ class AbrtReport < ActiveRecord::Base
 
   def self.import(json)
     reports = []
-    host    = Host.find_by_name(json[:host])
+    host    = Host.find_by_name(json[:host]) || Host.joins(:provision_interface).where({:nics => {:ip => json[:host]}}).try(:first)
 
     # If the host lookup failed, it is possible that we are using subscription management certificates which
     # have UUID in their CN instead of host's FQDN. Try asking Katello if it knows host with such UUID.
