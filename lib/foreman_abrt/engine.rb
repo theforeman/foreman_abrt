@@ -15,7 +15,9 @@ module ForemanAbrt
 
     # Add any db migrations
     initializer 'foreman_abrt.load_app_instance_data' do |app|
-      app.config.paths['db/migrate'] += ForemanAbrt::Engine.paths['db/migrate'].existent
+      ForemanAbrt::Engine.paths['db/migrate'].existent.each do |path|
+        app.config.paths['db/migrate'] << path
+      end
     end
 
     initializer 'foreman_abrt.register_plugin', :after=> :finisher_hook do |app|
