@@ -100,15 +100,15 @@ exist in Foreman web interface.
 
 - Make sure that ABRT is installed and running.
   ```
-  ~# yum install abrt-cli
-  ~# systemctl start abrtd
-  ~# systemctl start abrt-ccpp
+  yum install abrt-cli
+  systemctl start abrtd abrt-ccpp
+  systemctl enable abrtd abrt-ccpp
   ```
 
 - Enable auto-reporting by running the following command:
 
   ```
-  ~# abrt-auto-reporting enabled
+  abrt-auto-reporting enabled
   ```
 
 - Configure ABRT reporting destination -
@@ -144,16 +144,16 @@ exist in Foreman web interface.
   needed for verifying the validity of smart-proxy's certificate:
 
   ```
-  ~# cp /var/lib/puppet/ssl/certs/ca.pem /etc/pki/ca-trust/source/anchors/
-  ~# update-ca-trust
+  cp /var/lib/puppet/ssl/certs/ca.pem /etc/pki/ca-trust/source/anchors/
+  update-ca-trust
   ```
 
   **Katello:** when using Foreman with Katello, the subscription management
   certificate should be used instead:
 
   ```
-  ~# cp /etc/rhsm/ca/katello-server-ca.pem /etc/pki/ca-trust/source/anchors/
-  ~# update-ca-trust
+  cp /etc/rhsm/ca/katello-server-ca.pem /etc/pki/ca-trust/source/anchors/
+  update-ca-trust
   ```
 
 ### Verifying that the setup works
@@ -162,8 +162,8 @@ You can verify your setup by crashing something on your managed host. We have a
 set of utilities in the Fedora/EPEL repository especially for this purpose:
 
 ```
-~# yum -y install will-crash
-~$ will_segfault
+yum -y install will-crash
+will_segfault
 Will segfault.
 Segmentation fault (core dumped)
 ```
@@ -182,8 +182,8 @@ can try the following. Please make sure not to actually report this to `sleep`
 maintainers, though:
 
 ```
-~$ sleep 1d &
-~$ kill -SEGV $!
+sleep 1d &
+kill -SEGV $!
 ```
 
 ### Testing aggregation
@@ -236,4 +236,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
