@@ -13,7 +13,7 @@ class CreateAbrtReports < ActiveRecord::Migration
       t.boolean :response_known
       t.string :response_bthash
 
-      t.timestamps
+      t.timestamps :null => false
     end
 
     create_table :abrt_report_response_destinations do |t|
