@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = ForemanAbrt::VERSION
   s.date        = Date.today.to_s
   s.authors     = ["Martin Milata"]
-  s.email       = ["mmilata@redhat.com"]
+  s.email       = ["jfilak@redhat.com", "mmilata@redhat.com"]
   s.homepage    = "http://github.com/abrt/foreman_abrt"
   s.summary     = "Display reports from Automatic Bug Reporting Tool"
   s.description = "Foreman plugin that allows you to see problem reports "\

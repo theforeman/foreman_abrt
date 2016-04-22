@@ -220,6 +220,10 @@ configuration screen (*Administer*->*Settings*).
 
 - Use puppet to configure managed hosts to send ureports to Foreman.
 
+## Maintainer
+
+- Jakub Filak &lt;jfilak@redhat.com&gt;
+
 ## Copyright
 
 Copyright (c) 2014 Red Hat
