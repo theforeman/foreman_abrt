@@ -1,4 +1,4 @@
-class CreateAbrtReports < ActiveRecord::Migration
+class CreateAbrtReports < ActiveRecord::Migration[4.2]
   def change
     create_table :abrt_reports do |t|
       t.references :host, :null => false
