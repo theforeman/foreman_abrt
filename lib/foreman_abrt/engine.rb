@@ -33,7 +33,8 @@ module ForemanAbrt
         end
 
         # Add a new role
-        role 'ABRT reports handling', [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports]
+        role 'ABRT reports handling', [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports],
+             'TODO: Description'
 
         #add menu entry
         menu :top_menu, :template,
