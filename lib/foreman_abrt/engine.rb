@@ -34,7 +34,7 @@ module ForemanAbrt
 
         # Add a new role
         role 'ABRT reports handling', [:view_abrt_reports, :destroy_abrt_reports, :upload_abrt_reports, :forward_abrt_reports],
-             'TODO: Description'
+             'Role granting permissions for ABRT reportings plugin/'
 
         #add menu entry
         menu :top_menu, :template,
