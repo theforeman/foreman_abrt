@@ -9,9 +9,7 @@ namespace :test do
   end
 end
 
-Rake::Task[:test].enhance do
-  Rake::Task['test:foreman_abrt'].invoke
-end
+Rake::Task["test:plugins"].enhance ['test:foreman_abrt']
 
 load 'tasks/jenkins.rake'
 if Rake::Task.task_defined?(:'jenkins:setup')
