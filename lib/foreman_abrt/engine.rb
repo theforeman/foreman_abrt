@@ -28,7 +28,10 @@ module ForemanAbrt
         security_block :foreman_abrt do
           permission :view_abrt_reports,    {:abrt_reports => [:index, :show, :auto_complete_search] }
           permission :destroy_abrt_reports, {:abrt_reports => [:destroy] }
-          permission :upload_abrt_reports,  {:abrt_reports => [:create] }
+          permission :upload_abrt_reports,  {
+            :abrt_reports => [:create],
+            :"api/v2/abrt_reports" => [:create]
+          }
           permission :forward_abrt_reports, {:abrt_reports => [:forward] }
         end
 
